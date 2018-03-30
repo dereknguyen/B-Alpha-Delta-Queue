@@ -1,171 +1,293 @@
 //
 //  LoginVC.swift
-//  BAD Queue
+//  BadUITest
 //
-//  Created by Derek Nguyen on 3/26/18.
+//  Created by Derek Nguyen on 3/29/18.
 //  Copyright © 2018 B Alpha Delta. All rights reserved.
 //
 
 import UIKit
 
-class LoginVC: UIViewController {
+class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
     
-    var isSignUp = true
-    var fontSize: CGFloat = 15.0
-    var signInModePrompt: NSMutableAttributedString?
+    var scale = CGFloat(0.85)
+    var fontSize = CGFloat(14.0)
+    var isSignIn = true
+    var transformHeight = CGFloat(0.0)
+    var specialCount = 0
+    var specialOn = false
+    var color = #colorLiteral(red: 0.6218340993, green: 0, blue: 0, alpha: 1)
+    
+    var wallpaperImageView: UIImageView = {
+        let wallpaperIV = UIImageView(image: #imageLiteral(resourceName: "Wallpaper1").withRenderingMode(.alwaysOriginal))
+        wallpaperIV.contentMode = .scaleAspectFill
+        wallpaperIV.layer.borderWidth = 2
+        wallpaperIV.translatesAutoresizingMaskIntoConstraints = false
+        return wallpaperIV
+    }()
+    
+    var logoImageView: UIImageView = {
+        let logoIV = UIImageView(image: #imageLiteral(resourceName: "Logo").withRenderingMode(.alwaysOriginal))
+        logoIV.contentMode = .scaleAspectFit
+        logoIV.translatesAutoresizingMaskIntoConstraints = false
+        logoIV.alpha = 0.0
+        return logoIV
+    }()
+    
+    var addPhotoButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(#imageLiteral(resourceName: "Camera Icon").withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 0.3)
+        button.layer.borderColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.imageView?.center = button.center
+        button.alpha = 0.0
+        button.addTarget(self, action: #selector(getProfilePhoto), for: .touchUpInside)
+        return button
+    }()
+    
+    var fullNameTextField: UITextField = {
+        let textField = UITextField()
+        textField.autocorrectionType = .yes
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.textContentType = UITextContentType("")
+        textField.tintColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        textField.textColor = .white
+        textField.keyboardAppearance = .dark
+        textField.backgroundColor = #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 0.8)
+        textField.borderStyle = .none
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.alpha = 0.0
+
+        return textField
+    }()
+    
+    var emailTextField: UITextField = {
+        let textField = UITextField()
+        textField.autocorrectionType = .yes
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.textContentType = UITextContentType("")
+        textField.tintColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        textField.textColor = .white
+        textField.keyboardAppearance = .dark
+        textField.backgroundColor = #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 0.8)
+        textField.borderStyle = .none
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.alpha = 0.0
+        textField.textContentType = UITextContentType("")
+
+        return textField
+    }()
+    
+    
+    var passwordTextField: UITextField = {
+        let textField = UITextField()
+        textField.autocorrectionType = .yes
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.textContentType = UITextContentType("")
+        textField.tintColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        textField.textColor = .white
+        textField.keyboardAppearance = .dark
+        textField.backgroundColor = #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 0.8)
+        textField.borderStyle = .none
+        textField.isSecureTextEntry = true
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.alpha = 0.0
+        return textField
+    }()
+    
+    var orLabel: UILabel = {
+        let label = UILabel()
+        label.text = "O R   W I T H"
+        label.textColor = UIColor.white
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.alpha = 0.0
+        return label
+    }()
+    
+    var credentialStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.distribution = .fillEqually
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    var googleButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor.white
+        button.showsTouchWhenHighlighted = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0.0
+        return button
+    }()
+    
+    var facebookButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor.white
+        button.showsTouchWhenHighlighted = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0.0
+        return button
+    }()
+    
+    var authenticateButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        button.layer.cornerRadius = 5
+        button.setTitle("Sign In", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0.0
+        return button
+    }()
+    
     var signUpModePrompt: NSMutableAttributedString?
+    var signInModePrompt: NSMutableAttributedString?
     
-    @IBOutlet weak var logoImageView: UIImageView!
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var orLabel: UILabel!
-    @IBOutlet weak var facebookButton: UIButton!
-    @IBOutlet weak var googleButton: UIButton!
-    @IBOutlet weak var authenticateButton: UIButton!
-    @IBOutlet weak var toggleModeButton: UIButton!
+    var toggleModeButton: UIButton = {
+        let button = UIButton()
+        button.adjustsImageWhenHighlighted = true
+        button.adjustsImageWhenDisabled = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0.0
+        button.addTarget(self, action: #selector(toggleMode), for: .touchUpInside)
+        return button
+    }()
     
-    @IBOutlet weak var fullNameTextField: UITextField!
-    @IBOutlet weak var addPhotoButton: UIButton!
-    @IBOutlet weak var logoWidthConstraint: NSLayoutConstraint!
+    var gradient: CAGradientLayer = {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.3).cgColor, #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor]
+        return gradientLayer
+    }()
     
-    @IBAction func toggleMode(_ sender: UIButton) {
+    @objc fileprivate func getProfilePhoto() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.allowsEditing = true
         
-        isSignUp = !isSignUp
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    @objc fileprivate func toggleMode() {
+        isSignIn = !isSignIn
         changeText()
-        print(isSignUp)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if self.view.frame.height < 568 {
-            setupUISmallDevice()
-        }
-        
-        self.setupGradientBG()
-        self.setUpTextField()
-        self.setupFacebookBtn()
-        self.setupGoogleBtn()
-        self.setupPhotoButton()
-        self.setupToggleModeBtn()
-        self.authenticateButton.layer.cornerRadius = 5
-        
-    }
-}
+    @objc fileprivate func keyboardWillShow(notification: NSNotification) {
+        if let info = notification.userInfo {
+            
+            guard let keyboardFrame = info[UIKeyboardFrameEndUserInfoKey] as? CGRect else { return }
+            guard let curve = info[UIKeyboardAnimationCurveUserInfoKey] as? UInt else { return }
+            self.view.layoutIfNeeded()
 
-// MARK: Mode Logic
-extension LoginVC {
-    
-    fileprivate func changeText() {
-        if !isSignUp {
-            self.authenticateButton.titleLabel?.adjustsFontSizeToFitWidth = true
-            self.authenticateButton.setTitle("Sign Up", for: .normal)
-            self.toggleModeButton.setAttributedTitle(self.signInModePrompt, for: .normal)
-        }
-        else {
-            self.authenticateButton.titleLabel?.adjustsFontSizeToFitWidth = true
-            self.authenticateButton.setTitle("Sign In", for: .normal)
-            self.toggleModeButton.setAttributedTitle(self.signUpModePrompt, for: .normal)
+            let credStackY = CGFloat(keyboardFrame.origin.y - 8 - credentialStackView.frame.height - credentialStackView.frame.origin.y)
+            let fullNameY = CGFloat(keyboardFrame.origin.y - 8 - credentialStackView.frame.height - 8 - fullNameTextField.frame.height - fullNameTextField.frame.origin.y)
+            
+            UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions(rawValue: curve), animations: {
+
+                self.logoImageView.alpha = 0.0
+                self.addPhotoButton.alpha = 0.0
+                self.orLabel.alpha = 0.0
+                self.facebookButton.alpha = 0.0
+                self.googleButton.alpha = 0.0
+                self.authenticateButton.alpha = 0.0
+                self.toggleModeButton.alpha = 0.0
+                self.credentialStackView.transform = CGAffineTransform(translationX: 0, y: credStackY)
+                self.fullNameTextField.transform = CGAffineTransform(translationX: 0, y: fullNameY)
+                
+            }, completion: { (_) in
+                
+                self.addPhotoButton.isEnabled = false
+                self.facebookButton.isEnabled = false
+                self.googleButton.isEnabled = false
+                self.authenticateButton.isEnabled = false
+                self.toggleModeButton.isEnabled = false
+                
+            })
         }
     }
     
-}
+    @objc fileprivate func keyboardWillHide(notification: NSNotification) {
+        if let info = notification.userInfo {
 
-// MARK: UI Extension
-extension LoginVC {
+            self.addPhotoButton.isEnabled = true
+            self.facebookButton.isEnabled = true
+            self.googleButton.isEnabled = true
+            self.authenticateButton.isEnabled = true
+            self.toggleModeButton.isEnabled = true
+            
+            guard let curve = info[UIKeyboardAnimationCurveUserInfoKey] as? UInt else { return }
+            
+            UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions(rawValue: curve), animations: {
+                
+                self.logoImageView.alpha = 1.0
+                self.addPhotoButton.alpha = 1.0
+                self.orLabel.alpha = 1.0
+                self.facebookButton.alpha = 1.0
+                self.googleButton.alpha = 1.0
+                self.authenticateButton.alpha = 1.0
+                self.toggleModeButton.alpha = 1.0
+                self.credentialStackView.transform = CGAffineTransform(translationX: 0, y: 0)
+                self.fullNameTextField.transform = CGAffineTransform(translationX: 0, y: 0)
+                
+            }, completion: nil)
+        }
+    }
+    
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let edittedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            addPhotoButton.setImage(edittedImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            addPhotoButton.setImage(originalImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        
+        addPhotoButton.imageView?.contentMode = .scaleAspectFill
+        addPhotoButton.layer.masksToBounds = true
+        
+        dismiss(animated: true, completion: nil)
+    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
-    fileprivate func setUpTextField() {
-        self.fullNameTextField.setupTextField(leftImage: #imageLiteral(resourceName: "User Icon"), placeHolder: "Full Name", fontSize: self.fontSize)
-        self.emailTextField.setupTextField(leftImage: #imageLiteral(resourceName: "Email Icon"), placeHolder: "Email", fontSize: self.fontSize)
-        self.passwordTextField.setupTextField(leftImage: #imageLiteral(resourceName: "Lock Icon"), placeHolder: "Password", fontSize: self.fontSize)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
     
-    fileprivate func setupUISmallDevice() {
-        self.fontSize = 9.0
-        self.authenticateButton.titleLabel?.font = UIFont.systemFont(ofSize: self.fontSize)
-        self.orLabel.font = UIFont.systemFont(ofSize: self.fontSize)
-        self.logoWidthConstraint.setMultiplier(multiplier: 0.7)
-    }
-    
-    fileprivate func setupGradientBG() {
-        let gradientLayer = CAGradientLayer()
-//        gradientLayer.colors = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.3).cgColor, #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor]
-        gradientLayer.colors = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor, #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor]
-        gradientLayer.frame = self.view.frame
-        self.view.layer.insertSublayer(gradientLayer, at: 1)
-    }
-    
-    fileprivate func setupFacebookBtn() {
-        self.facebookButton.layer.cornerRadius = 5
+    // MARK: VIEWDIDLOAD
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        specialCount = 0
         
-        let imageView = UIImageView(frame: CGRect(origin: self.facebookButton.center,
-                                                  size: CGSize(width: self.facebookButton.frame.width * 0.7,
-                                                               height: self.facebookButton.frame.height * 0.7)))
-        imageView.image = #imageLiteral(resourceName: "Facebook f")
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow(notification:)),
+                                               name: NSNotification.Name.UIKeyboardWillShow,
+                                               object: nil)
         
-        self.facebookButton.addSubview(imageView)
-        imageView.centerXAnchor.constraint(equalTo: self.facebookButton.centerXAnchor).isActive = true
-        imageView.centerYAnchor.constraint(equalTo: self.facebookButton.centerYAnchor).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: imageView.frame.width * 0.8).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: imageView.frame.width * 0.8).isActive = true
-    }
-    
-    fileprivate func setupGoogleBtn() {
-        self.googleButton.layer.cornerRadius = 5
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide(notification:)),
+                                               name: NSNotification.Name.UIKeyboardWillHide,
+                                               object: nil)
         
-        let imageView = UIImageView(frame: CGRect(origin: self.googleButton.center,
-                                                  size: CGSize(width: self.googleButton.frame.width * 0.7,
-                                                               height: self.googleButton.frame.height * 0.7)))
-        imageView.image = #imageLiteral(resourceName: "Google Logo")
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        if view.frame.height < 568 {
+            scale = 0.7
+            fontSize = 12.0
+        }
         
-        self.googleButton.addSubview(imageView)
-        imageView.centerXAnchor.constraint(equalTo: self.googleButton.centerXAnchor).isActive = true
-        imageView.centerYAnchor.constraint(equalTo: self.googleButton.centerYAnchor).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: imageView.frame.width * 0.8).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: imageView.frame.width * 0.8).isActive = true
-
+        setupUI()
     }
     
     
-    fileprivate func setupToggleModeBtn() {
-        self.signUpModePrompt = NSMutableAttributedString(string: "Don't have an account? ",
-                                                          attributes: [.foregroundColor: UIColor.white])
-        
-        let attributedSignUp = NSMutableAttributedString(string: "Sign Up.",
-                                                         attributes: [
-                                                            .foregroundColor: #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1),
-                                                            .font: UIFont.boldSystemFont(ofSize: self.fontSize)])
-        
-        
-        self.signInModePrompt = NSMutableAttributedString(string: "Already have an account? ",
-                                                          attributes: [.foregroundColor: UIColor.white])
-        
-        let attributedSignIn = NSMutableAttributedString(string: "Sign In.",
-                                                         attributes: [
-                                                            .foregroundColor: #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1),
-                                                            .font: UIFont.boldSystemFont(ofSize: self.fontSize)])
-        
-        
-        self.signUpModePrompt?.append(attributedSignUp)
-        self.signInModePrompt?.append(attributedSignIn)
-        
-        self.toggleModeButton.setAttributedTitle(signInModePrompt, for: .normal)
-    }
-    
-    fileprivate func setupPhotoButton() {
-        self.addPhotoButton.setImage(#imageLiteral(resourceName: "Camera Icon").withRenderingMode(UIImageRenderingMode.alwaysOriginal), for: UIControlState.normal)
-        self.addPhotoButton.layer.borderWidth = 1
-        self.addPhotoButton.layer.borderColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
-        self.addPhotoButton.layer.cornerRadius = 5
-    }
-
 }
+
 

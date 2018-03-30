@@ -7,26 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F25BA27E206CE18D00BADB9A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F25BA27D206CE18D00BADB9A /* LaunchScreen.storyboard */; };
+		F25BA2A3206D580000BADB9A /* LoginVCExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25BA2A2206D580000BADB9A /* LoginVCExtensions.swift */; };
+		F28C1976206E098100CC2DF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F28C1975206E098100CC2DF1 /* Assets.xcassets */; };
 		F292CDC5206A1181000B8F6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F292CDC4206A1181000B8F6D /* AppDelegate.swift */; };
 		F292CDC7206A1181000B8F6D /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F292CDC6206A1181000B8F6D /* LoginVC.swift */; };
 		F292CDCA206A1181000B8F6D /* Authenticate.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F292CDC8206A1181000B8F6D /* Authenticate.storyboard */; };
 		F292CDCD206A1181000B8F6D /* BAD_Queue.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F292CDCB206A1181000B8F6D /* BAD_Queue.xcdatamodeld */; };
-		F292CDCF206A1181000B8F6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F292CDCE206A1181000B8F6D /* Assets.xcassets */; };
-		F292CDD2206A1181000B8F6D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F292CDD0206A1181000B8F6D /* LaunchScreen.storyboard */; };
-		F2D6365B206A6E45009112E7 /* DesignableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D6365A206A6E45009112E7 /* DesignableTextField.swift */; };
 		F2E41F03206CC714007B7851 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E41F02206CC714007B7851 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F25BA27D206CE18D00BADB9A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F25BA2A2206D580000BADB9A /* LoginVCExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVCExtensions.swift; sourceTree = "<group>"; };
+		F28C1975206E098100CC2DF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F292CDC1206A1181000B8F6D /* BAD Queue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BAD Queue.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F292CDC4206A1181000B8F6D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F292CDC6206A1181000B8F6D /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		F292CDC9206A1181000B8F6D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Authenticate.storyboard; sourceTree = "<group>"; };
 		F292CDCC206A1181000B8F6D /* BAD_Queue.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BAD_Queue.xcdatamodel; sourceTree = "<group>"; };
-		F292CDCE206A1181000B8F6D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F292CDD1206A1181000B8F6D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F292CDD3206A1182000B8F6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F2D6365A206A6E45009112E7 /* DesignableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableTextField.swift; sourceTree = "<group>"; };
 		F2E41F02206CC714007B7851 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -45,6 +45,7 @@
 			isa = PBXGroup;
 			children = (
 				F292CDC6206A1181000B8F6D /* LoginVC.swift */,
+				F25BA2A2206D580000BADB9A /* LoginVCExtensions.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -80,11 +81,10 @@
 				F2D6365C206A7131009112E7 /* Custom UI Elements */,
 				F25EE34D206A6BAC009B5B0F /* Storyboards */,
 				F25EE34C206A6B8E009B5B0F /* View Controllers */,
-				F292CDCE206A1181000B8F6D /* Assets.xcassets */,
-				F292CDD0206A1181000B8F6D /* LaunchScreen.storyboard */,
+				F25BA27D206CE18D00BADB9A /* LaunchScreen.storyboard */,
+				F28C1975206E098100CC2DF1 /* Assets.xcassets */,
 				F292CDD3206A1182000B8F6D /* Info.plist */,
 				F292CDCB206A1181000B8F6D /* BAD_Queue.xcdatamodeld */,
-				F2D6365A206A6E45009112E7 /* DesignableTextField.swift */,
 			);
 			path = "BAD Queue";
 			sourceTree = "<group>";
@@ -156,8 +156,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F292CDD2206A1181000B8F6D /* LaunchScreen.storyboard in Resources */,
-				F292CDCF206A1181000B8F6D /* Assets.xcassets in Resources */,
+				F25BA27E206CE18D00BADB9A /* LaunchScreen.storyboard in Resources */,
+				F28C1976206E098100CC2DF1 /* Assets.xcassets in Resources */,
 				F292CDCA206A1181000B8F6D /* Authenticate.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -171,9 +171,9 @@
 			files = (
 				F292CDC7206A1181000B8F6D /* LoginVC.swift in Sources */,
 				F292CDC5206A1181000B8F6D /* AppDelegate.swift in Sources */,
+				F25BA2A3206D580000BADB9A /* LoginVCExtensions.swift in Sources */,
 				F292CDCD206A1181000B8F6D /* BAD_Queue.xcdatamodeld in Sources */,
 				F2E41F03206CC714007B7851 /* Extensions.swift in Sources */,
-				F2D6365B206A6E45009112E7 /* DesignableTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,14 +186,6 @@
 				F292CDC9206A1181000B8F6D /* Base */,
 			);
 			name = Authenticate.storyboard;
-			sourceTree = "<group>";
-		};
-		F292CDD0206A1181000B8F6D /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F292CDD1206A1181000B8F6D /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
