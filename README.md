@@ -1,1 +1,1 @@
-![](Logo@3x.png "Title")
+![](Logo.png "Title")
