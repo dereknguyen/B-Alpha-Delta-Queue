@@ -10,19 +10,23 @@ import UIKit
 import Firebase
 import FacebookCore
 import FacebookLogin
+import GoogleSignIn
+import JGProgressHUD
 
-class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, GIDSignInUIDelegate  {
     
-    var scale = CGFloat(0.85)
-    var fontSize = CGFloat(14.0)
-    var isSignIn = true
     var transformHeight = CGFloat(0.0)
-    var specialCount = 0
-    var specialOn = false
-    var color = #colorLiteral(red: 0.6218340993, green: 0, blue: 0, alpha: 1)
+    
+    let hud: JGProgressHUD = {
+        let hud = JGProgressHUD(style: JGProgressHUDStyle.dark)
+        hud.interactionType = .blockAllTouches
+        hud.vibrancyEnabled = true
+        
+        return hud
+    }()
     
     var wallpaperImageView: UIImageView = {
-        let wallpaperIV = UIImageView(image: #imageLiteral(resourceName: "Wallpaper1").withRenderingMode(.alwaysOriginal))
+        let wallpaperIV = UIImageView(image: System.wallpaper)
         wallpaperIV.contentMode = .scaleAspectFill
         wallpaperIV.layer.borderWidth = 2
         wallpaperIV.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +34,7 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
     }()
     
     var logoImageView: UIImageView = {
-        let logoIV = UIImageView(image: #imageLiteral(resourceName: "Logo").withRenderingMode(.alwaysOriginal))
+        let logoIV = UIImageView(image: System.logo)
         logoIV.contentMode = .scaleAspectFit
         logoIV.translatesAutoresizingMaskIntoConstraints = false
         logoIV.alpha = 0.0
@@ -40,9 +44,9 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
     var addPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "Camera Icon").withRenderingMode(.alwaysTemplate), for: .normal)
-        button.tintColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        button.tintColor = System.mainColor
         button.backgroundColor = #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 0.3)
-        button.layer.borderColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        button.layer.borderColor = System.mainColor.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -58,10 +62,10 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
         textField.textContentType = UITextContentType("")
-        textField.tintColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        textField.tintColor = System.mainColor
         textField.textColor = .white
         textField.keyboardAppearance = .dark
-        textField.backgroundColor = #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 0.8)
+        textField.backgroundColor = System.secondaryColor
         textField.borderStyle = .none
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.alpha = 0.0
@@ -75,10 +79,10 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
         textField.textContentType = UITextContentType("")
-        textField.tintColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        textField.tintColor = System.mainColor
         textField.textColor = .white
         textField.keyboardAppearance = .dark
-        textField.backgroundColor = #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 0.8)
+        textField.backgroundColor = System.secondaryColor
         textField.borderStyle = .none
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.alpha = 0.0
@@ -94,10 +98,10 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
         textField.textContentType = UITextContentType("")
-        textField.tintColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        textField.tintColor = System.mainColor
         textField.textColor = .white
         textField.keyboardAppearance = .dark
-        textField.backgroundColor = #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 0.8)
+        textField.backgroundColor = System.secondaryColor
         textField.borderStyle = .none
         textField.isSecureTextEntry = true
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -155,7 +159,7 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
     
     var authenticateButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = #colorLiteral(red: 0.568627451, green: 0.09803921569, blue: 0.06666666667, alpha: 1)
+        button.backgroundColor = System.mainColor
         button.layer.cornerRadius = 5
         button.setTitle("Sign In", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
@@ -180,7 +184,7 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
     
     var gradient: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.3).cgColor, #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor]
+        gradientLayer.colors = System.mainGradientColors
         return gradientLayer
     }()
     
@@ -193,7 +197,7 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
     }
     
     @objc fileprivate func toggleMode() {
-        isSignIn = !isSignIn
+        System.toggleMode()
         changeText()
     }
     
@@ -283,7 +287,9 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
     // MARK: VIEWDIDLOAD
     override func viewDidLoad() {
         super.viewDidLoad()
-        specialCount = 0
+        
+        System.resetSpecialCount()
+        GIDSignIn.sharedInstance().uiDelegate = self
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(notification:)),
@@ -296,8 +302,7 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
                                                object: nil)
         
         if view.frame.height < 568 {
-            scale = 0.7
-            fontSize = 12.0
+            System.iPhone4Mode()
         }
         
         setupUI()
@@ -308,10 +313,10 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
 extension LoginVC {
     
     @objc fileprivate func authenticateEmail() {
-        authenticateButton.backgroundColor = #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 0.8)
+        authenticateButton.backgroundColor = System.secondaryColor
         authenticateButton.isEnabled = false
         
-        if isSignIn {
+        if System.isSignInMode {
             signInEmail()
         }
         else {
@@ -332,13 +337,13 @@ extension LoginVC {
                 
                 // TODO: PARSE ERROR
                 print("Login Error: \n", err)
-                this.authenticateButton.backgroundColor = this.color
+                this.authenticateButton.backgroundColor = System.mainColor
                 this.authenticateButton.isEnabled = true
             }
             else {
                 // TODO: PROCEED AFTER LOG IN SUCCESSFULLY
                 print("Login Success!")
-                this.authenticateButton.backgroundColor = this.color
+                this.authenticateButton.backgroundColor = System.mainColor
                 this.authenticateButton.isEnabled = true
                 
                 // TODO: REMOVE
@@ -352,7 +357,12 @@ extension LoginVC {
         }
     }
     
+    
     fileprivate func signUpEmail() {
+        
+        hud.textLabel.text = "Creating Account..."
+        prepScreen(alpha: 0.0)
+        hud.show(in: view, animated: true)
         
         guard let fullName = fullNameTextField.text else { /* TODO: DETECT EMPTY */ return }
         guard let email = emailTextField.text else { /* TODO: DETECT EMPTY */ return }
@@ -367,14 +377,11 @@ extension LoginVC {
                 
                 // TODO: PARSE ERROR
                 print("Create Account Error: \n", err)
-                this.authenticateButton.backgroundColor = this.color
-                this.authenticateButton.isEnabled = true
             }
             else {
                 // TODO: PROCEED AFTER CREATE SUCCESSFULLY
                 print("Create User Success!")
-                this.authenticateButton.backgroundColor = this.color
-                this.authenticateButton.isEnabled = true
+
                 
                 // TODO: REMOVE
                 do {
@@ -384,7 +391,14 @@ extension LoginVC {
                     print("Log Out error")
                 }
             }
+       
+            this.authenticateButton.backgroundColor = System.mainColor
+            this.authenticateButton.isEnabled = true
             
+            this.hud.dismiss(animated: true)
+            this.prepScreen(alpha: 1.0, delay: 0.5)
+
+        
         }
         
     }
@@ -392,11 +406,11 @@ extension LoginVC {
 
 extension LoginVC {
     @objc fileprivate func authenticateGoogle() {
-        
+        GIDSignIn.sharedInstance().signIn()
     }
     
     @objc fileprivate func authenticateFacebook() {
-        if isSignIn {
+        if System.isSignInMode {
             let manager = LoginManager(loginBehavior: .native, defaultAudience: .onlyMe)
             
             manager.logIn(readPermissions: [.publicProfile, .email], viewController: self) {
@@ -405,14 +419,21 @@ extension LoginVC {
                 guard let this = self else { return }
                 
                 switch loginResult {
+                    
                 case .success(grantedPermissions: _, declinedPermissions: _, token: _):
                     // TODO: FILL IN PARAMETERS FOR SUCCESS FB LOGIN
+                    this.hud.textLabel.text = "Signing In"
+                    this.prepScreen(alpha: 0.0)
+                    this.hud.show(in: this.view, animated: true)
                     this.firebaseLogin()
+                    
                 case .cancelled:
                     // TODO: HANDLE USER CANCEL FB LOGIN ATTEMPT
                     print("User cancel FB Login attempt.")
+                    
                 case .failed(let error):
                     print("FB Login Error: \n", error)
+
                 }
             }
         }
@@ -423,29 +444,24 @@ extension LoginVC {
         let authCredential = FacebookAuthProvider.credential(withAccessToken: authToken)
         
         Auth.auth().signIn(with: authCredential) {
-            (user, error) in
+            [weak self](user, error) in
+            
+            guard let this = self else { return }
             if let err = error {
                 print("Facebook -> Firebase Login Error: ", err)
             }
             else {
                 print("Facebook -> Firebase Login Success")
+                this.hud.dismiss(animated: true)
+                this.prepScreen(alpha: 1.0, delay: 0.5)
+                
+                print("Signing Out")
+                try? Auth.auth().signOut()
+
             }
         }
     }
     
-    fileprivate func showUserInfos() {
-        
-//        FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email"]).start {
-//            (connection, result, error) in
-//            if let err = error {
-//                print("Failed:", err)
-//                return
-//            }
-//            else {
-//                print(result ?? "")
-//            }
-//        }
-    }
 }
 
 

@@ -8,36 +8,6 @@
 
 import UIKit
 
-extension NSLayoutConstraint {
-    /**
-     Change multiplier constraint
-     
-     - parameter multiplier: CGFloat
-     - returns: NSLayoutConstraint
-     */
-    func setMultiplier(multiplier:CGFloat) {
-        
-        NSLayoutConstraint.deactivate([self])
-        
-        guard let item = firstItem else { return }
-        
-        let newConstraint = NSLayoutConstraint(
-            item: item,
-            attribute: firstAttribute,
-            relatedBy: relation,
-            toItem: secondItem,
-            attribute: secondAttribute,
-            multiplier: multiplier,
-            constant: constant)
-        
-        newConstraint.priority = priority
-        newConstraint.shouldBeArchived = self.shouldBeArchived
-        newConstraint.identifier = self.identifier
-        
-        NSLayoutConstraint.activate([newConstraint])
-    }
-}
-
 extension UITextField {
     func setupTextField(leftImage: UIImage? = nil, placeHolder: String? = "", fontSize: CGFloat) {
         
@@ -69,6 +39,14 @@ extension UITextField {
         else {
             leftViewMode = .never
         }
+    }
+}
+
+extension String {
+    var isEmail: Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,20}"
+        let emailTest  = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: self)
     }
 }
 

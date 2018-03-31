@@ -10,10 +10,11 @@ import UIKit
 import CoreData
 import Firebase
 import FacebookCore
+import GoogleSignIn
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
+class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
+    
     var window: UIWindow?
 
 
@@ -22,6 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
         
         window = UIWindow()
         window?.rootViewController = LoginVC()
@@ -30,11 +33,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        let facebookHandled = SDKApplicationDelegate.shared.application(app, open: url, options: options)
         
-        return facebookHandled
+        var handled = SDKApplicationDelegate.shared.application(app, open: url, options: options)
+        
+        if !handled {
+            handled = GIDSignIn.sharedInstance().handle(url, sourceApplication: options[.sourceApplication] as? String, annotation: [:  ])
+        }
+        
+        return handled
     }
 
+    // MARK: GOOGLE SIGN IN METHOD
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        
+        if let error = error {
+            print("Google Sign In AppDelegate Error: \n", error)
+            return
+        }
+        
+        guard let authentication = user.authentication else { return }
+        
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
+        
+        Auth.auth().signIn(with: credential) {
+            (user, error) in
+            if let error = error {
+                print("Failed to create Firebase user with Google Sign-in: \n", error)
+            }
+            else {
+                guard let uid = user?.uid else { return }
+                print("Google Signed into Firebase: UID -> ", uid)
+                // TODO: REMOVE THIS
+                try? Auth.auth().signOut()
+            }
+        }
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

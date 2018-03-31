@@ -16,6 +16,7 @@
 		F292CDC7206A1181000B8F6D /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F292CDC6206A1181000B8F6D /* LoginVC.swift */; };
 		F292CDCA206A1181000B8F6D /* Authenticate.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F292CDC8206A1181000B8F6D /* Authenticate.storyboard */; };
 		F292CDCD206A1181000B8F6D /* BAD_Queue.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F292CDCB206A1181000B8F6D /* BAD_Queue.xcdatamodeld */; };
+		F2A87D81206F7AE8000A2438 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A87D80206F7AE8000A2438 /* System.swift */; };
 		F2E41F03206CC714007B7851 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E41F02206CC714007B7851 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		F292CDC9206A1181000B8F6D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Authenticate.storyboard; sourceTree = "<group>"; };
 		F292CDCC206A1181000B8F6D /* BAD_Queue.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BAD_Queue.xcdatamodel; sourceTree = "<group>"; };
 		F292CDD3206A1182000B8F6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F2A87D80206F7AE8000A2438 /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		F2E41F02206CC714007B7851 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,7 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				F292CDC4206A1181000B8F6D /* AppDelegate.swift */,
-				F2D6365C206A7131009112E7 /* Custom UI Elements */,
+				F2D6365C206A7131009112E7 /* Utils */,
 				F25EE34D206A6BAC009B5B0F /* Storyboards */,
 				F25EE34C206A6B8E009B5B0F /* View Controllers */,
 				F25BA27D206CE18D00BADB9A /* LaunchScreen.storyboard */,
@@ -108,12 +110,13 @@
 			path = "BAD Queue";
 			sourceTree = "<group>";
 		};
-		F2D6365C206A7131009112E7 /* Custom UI Elements */ = {
+		F2D6365C206A7131009112E7 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				F2E41F02206CC714007B7851 /* Extensions.swift */,
+				F2A87D80206F7AE8000A2438 /* System.swift */,
 			);
-			path = "Custom UI Elements";
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		FAA3A593BBE9F9A86E3D7234 /* Frameworks */ = {
@@ -210,6 +213,7 @@
 				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookShare/FacebookShare.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework",
@@ -225,6 +229,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookShare.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JGProgressHUD.framework",
@@ -260,9 +265,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BAD Queue/Pods-BAD Queue-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -281,6 +289,7 @@
 				F25BA2A3206D580000BADB9A /* LoginVCExtensions.swift in Sources */,
 				F292CDCD206A1181000B8F6D /* BAD_Queue.xcdatamodeld in Sources */,
 				F2E41F03206CC714007B7851 /* Extensions.swift in Sources */,
+				F2A87D81206F7AE8000A2438 /* System.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,7 +357,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -401,7 +410,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

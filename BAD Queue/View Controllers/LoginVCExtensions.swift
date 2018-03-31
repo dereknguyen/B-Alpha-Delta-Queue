@@ -8,6 +8,7 @@
 
 import UIKit
 
+// MARK: UI LAYOUT
 extension LoginVC {
     
     internal func setupUI() {
@@ -57,38 +58,38 @@ extension LoginVC {
             self.logoImageView.transform = CGAffineTransform(translationX: 0, y: self.transformHeight)
         }, completion: nil)
         
-        UIView.animate(withDuration: 1.0, delay: 0.6, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.5, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.emailTextField.alpha = 1.0
             self.emailTextField.transform = CGAffineTransform(translationX: 0, y: 0)
         }, completion: nil)
         
-        UIView.animate(withDuration: 1.0, delay: 0.7, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.6, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.passwordTextField.alpha = 1.0
             self.passwordTextField.transform = CGAffineTransform(translationX: 0, y: 0)
         }, completion: nil)
-        
-        UIView.animate(withDuration: 1.0, delay: 0.8, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+    
+        UIView.animate(withDuration: 1.0, delay: 0.7, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.orLabel.alpha = 1.0
             self.orLabel.transform = CGAffineTransform(translationX: 0, y: 0)
         }, completion: nil)
         
-        UIView.animate(withDuration: 1.0, delay: 0.9, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.8, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.facebookButton.alpha = 1.0
             self.facebookButton.transform = CGAffineTransform(translationX: 0, y: 0)
         }, completion: nil)
         
-        UIView.animate(withDuration: 1.0, delay: 1.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.9, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.googleButton.alpha = 1.0
             self.googleButton.transform = CGAffineTransform(translationX: 0, y: 0)
         }, completion: nil)
         
-        UIView.animate(withDuration: 1.0, delay: 1.1, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 1.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.authenticateButton.alpha = 1.0
             self.authenticateButton.transform = CGAffineTransform(translationX: 0, y: 0)
             
         }, completion: nil)
         
-        UIView.animate(withDuration: 1.0, delay: 1.2, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 1.1, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.toggleModeButton.alpha = 1.0
             self.toggleModeButton.transform = CGAffineTransform(translationX: 0, y: 0)
         }, completion: nil)
@@ -109,7 +110,7 @@ extension LoginVC {
     private func setupLogo() {
         
         logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
-        logoImageView.widthAnchor.constraint(equalToConstant: view.frame.width * scale).isActive = true
+        logoImageView.widthAnchor.constraint(equalToConstant: view.frame.width * System.widthScale).isActive = true
         logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: 120 / 343).isActive = true
         logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
@@ -132,7 +133,7 @@ extension LoginVC {
         
         fullNameTextField.heightAnchor.constraint(equalToConstant: emailTextField.frame.size.height).isActive = true
         fullNameTextField.layoutIfNeeded()
-        fullNameTextField.setupTextField(leftImage: #imageLiteral(resourceName: "User Icon"), placeHolder: "Full Name", fontSize: fontSize)
+        fullNameTextField.setupTextField(leftImage: #imageLiteral(resourceName: "User Icon"), placeHolder: "Full Name", fontSize: System.fontSize)
     }
     
     private func setupOrLabel() {
@@ -142,7 +143,7 @@ extension LoginVC {
         orLabel.heightAnchor.constraint(equalToConstant: fullNameTextField.frame.height * 0.3).isActive = true
         orLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         orLabel.layoutIfNeeded()
-        orLabel.font = UIFont.systemFont(ofSize: fontSize)
+        orLabel.font = UIFont.systemFont(ofSize: System.fontSize)
     }
     
     private func setupAuthButton() {
@@ -163,8 +164,8 @@ extension LoginVC {
         credentialStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         credentialStackView.layoutIfNeeded()
-        emailTextField.setupTextField(leftImage: #imageLiteral(resourceName: "Email Icon"), placeHolder: "Email", fontSize: fontSize)
-        passwordTextField.setupTextField(leftImage: #imageLiteral(resourceName: "Lock Icon"), placeHolder: "Password", fontSize: fontSize)
+        emailTextField.setupTextField(leftImage: #imageLiteral(resourceName: "Email Icon"), placeHolder: "Email", fontSize: System.fontSize)
+        passwordTextField.setupTextField(leftImage: #imageLiteral(resourceName: "Lock Icon"), placeHolder: "Password", fontSize: System.fontSize)
     }
     
     private func setupSocialButtons() {
@@ -235,23 +236,23 @@ extension LoginVC {
         self.signUpModePrompt = NSMutableAttributedString(string: "Don't have an account? ",
                                                           attributes: [
                                                             .foregroundColor: UIColor.white,
-                                                            .font: UIFont.systemFont(ofSize: self.fontSize)])
+                                                            .font: UIFont.systemFont(ofSize: System.fontSize)])
         
         let attributedSignUp = NSMutableAttributedString(string: "Sign Up.",
                                                          attributes: [
-                                                            .foregroundColor: color,
-                                                            .font: UIFont.boldSystemFont(ofSize: self.fontSize)])
+                                                            .foregroundColor: System.mainColor,
+                                                            .font: UIFont.boldSystemFont(ofSize: System.fontSize)])
         
         
         self.signInModePrompt = NSMutableAttributedString(string: "Already have an account? ",
                                                           attributes: [
                                                             .foregroundColor: UIColor.white,
-                                                            .font: UIFont.systemFont(ofSize: self.fontSize)])
+                                                            .font: UIFont.systemFont(ofSize: System.fontSize)])
         
         let attributedSignIn = NSMutableAttributedString(string: "Sign In.",
                                                          attributes: [
-                                                            .foregroundColor: color,
-                                                            .font: UIFont.boldSystemFont(ofSize: self.fontSize)])
+                                                            .foregroundColor: System.mainColor,
+                                                            .font: UIFont.boldSystemFont(ofSize: System.fontSize)])
         
         
         self.signUpModePrompt?.append(attributedSignUp)
@@ -263,28 +264,29 @@ extension LoginVC {
     }
 }
 
-// MARK: Mode Logic
+// MARK: MODE LOGIC
 extension LoginVC {
     
     private func theSpecial() {
-        if specialCount > 20, !specialOn{
-            wallpaperImageView.image = #imageLiteral(resourceName: "Bad Background")
-            logoImageView.image = #imageLiteral(resourceName: "Bad Logo")
-            changeTheme(newColor: #colorLiteral(red: 0, green: 0.2392156863, blue: 0.6470588235, alpha: 1))
-            view.layoutSubviews()
-            specialCount = 0
-            specialOn = true
-        }
-        else if specialCount > 10, specialOn {
-            wallpaperImageView.image = #imageLiteral(resourceName: "Wallpaper1")
-            logoImageView.image = #imageLiteral(resourceName: "Logo")
-            changeTheme(newColor: color)
-            view.layoutSubviews()
-            specialCount = 0
-            specialOn = false
+        if System.specialCount > 20 {
+
+            if !System.specialOn {
+                wallpaperImageView.image = #imageLiteral(resourceName: "Bad Background")
+                logoImageView.image = #imageLiteral(resourceName: "Bad Logo")
+                changeTheme(newColor: System.hiddenColor)
+            }
+            else {
+                wallpaperImageView.image = System.wallpaper
+                logoImageView.image = System.logo
+                changeTheme(newColor: System.mainColor)
+            }
+            
+            view.layoutIfNeeded()
+            System.resetSpecialCount()
+            System.toggleSpecial()
         }
         else {
-            specialCount += 1
+            System.incrementSpecial()
         }
     }
     
@@ -308,13 +310,13 @@ extension LoginVC {
         self.authenticateButton.isEnabled = false
         
         
-        if !isSignIn {
+        if !System.isSignInMode {
             
             self.authenticateButton.titleLabel?.adjustsFontSizeToFitWidth = true
             self.authenticateButton.setTitle("Sign Up", for: .normal)
             self.toggleModeButton.setAttributedTitle(self.signInModePrompt, for: .normal)
             
-            gradientAnimation.toValue = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7).cgColor, #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor]
+            gradientAnimation.toValue = System.secondaryGradientColors
             
             gradient.add(gradientAnimation, forKey: "colorChange")
             
@@ -333,7 +335,7 @@ extension LoginVC {
             }, completion: { (_) in
                 self.toggleModeButton.isEnabled = true
                 self.authenticateButton.isEnabled = true
-                self.gradient.colors = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7).cgColor, #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor]
+                self.gradient.colors = System.secondaryGradientColors
             })
             
         }
@@ -342,7 +344,7 @@ extension LoginVC {
             self.authenticateButton.setTitle("Sign In", for: .normal)
             self.toggleModeButton.setAttributedTitle(self.signUpModePrompt, for: .normal)
             
-            gradientAnimation.toValue = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.3).cgColor, #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor]
+            gradientAnimation.toValue = System.mainGradientColors
             gradient.add(gradientAnimation, forKey: "colorChange")
             
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
@@ -360,12 +362,25 @@ extension LoginVC {
             }, completion: { (_) in
                 self.toggleModeButton.isEnabled = true
                 self.authenticateButton.isEnabled = true
-                self.gradient.colors = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.3).cgColor, #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor]
+                self.gradient.colors = System.mainGradientColors
             })
         }
         
         theSpecial()
     }
     
+    func prepScreen(alpha: CGFloat, delay: Double = 0.0) {
+        UIView.animate(withDuration: 0.3, delay: delay, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+            self.logoImageView.alpha = alpha
+            self.addPhotoButton.alpha = alpha
+            self.fullNameTextField.alpha = alpha
+            self.credentialStackView.alpha = alpha
+            self.orLabel.alpha = alpha
+            self.socialStackView.alpha = alpha
+            self.authenticateButton.alpha = alpha
+            self.toggleModeButton.alpha = alpha
+        }, completion: nil)
+    }
+
 
 }
