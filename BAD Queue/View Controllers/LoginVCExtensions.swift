@@ -10,7 +10,9 @@ import UIKit
 
 extension LoginVC {
     
-    func setupUI() {
+    internal func setupUI() {
+        addSubviews()
+        
         setupWallpaper()
         setupLogo()
         setupPhotoButton()
@@ -21,6 +23,17 @@ extension LoginVC {
         setupToggleModeButton()
         view.layoutIfNeeded()
         readyPosition()
+    }
+    
+    private func addSubviews() {
+        view.addSubview(wallpaperImageView)
+        view.addSubview(logoImageView)
+        view.addSubview(socialStackView)
+        view.addSubview(addPhotoButton)
+        view.addSubview(orLabel)
+        view.addSubview(authenticateButton)
+        view.addSubview(fullNameTextField)
+        view.addSubview(credentialStackView)
     }
     
     private func readyPosition() {
@@ -83,7 +96,7 @@ extension LoginVC {
     }
     
     private func setupWallpaper() {
-        view.addSubview(wallpaperImageView)
+        
         wallpaperImageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         wallpaperImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         wallpaperImageView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
@@ -94,7 +107,7 @@ extension LoginVC {
     }
     
     private func setupLogo() {
-        view.addSubview(logoImageView)
+        
         logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
         logoImageView.widthAnchor.constraint(equalToConstant: view.frame.width * scale).isActive = true
         logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: 120 / 343).isActive = true
@@ -102,7 +115,7 @@ extension LoginVC {
     }
     
     private func setupPhotoButton() {
-        view.addSubview(addPhotoButton)
+        
         addPhotoButton.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 8).isActive = true
         addPhotoButton.widthAnchor.constraint(equalTo: logoImageView.heightAnchor, multiplier: 1).isActive = true
         addPhotoButton.heightAnchor.constraint(equalTo: logoImageView.heightAnchor, multiplier: 1).isActive = true
@@ -110,7 +123,7 @@ extension LoginVC {
     }
     
     private func setupInputTextFields() {
-        view.addSubview(fullNameTextField)
+        
         fullNameTextField.topAnchor.constraint(equalTo: addPhotoButton.bottomAnchor, constant: 8).isActive = true
         fullNameTextField.widthAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: 1).isActive = true
         fullNameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -123,7 +136,7 @@ extension LoginVC {
     }
     
     private func setupOrLabel() {
-        view.addSubview(orLabel)
+        
         orLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 8).isActive = true
         orLabel.widthAnchor.constraint(equalToConstant: fullNameTextField.frame.width).isActive = true
         orLabel.heightAnchor.constraint(equalToConstant: fullNameTextField.frame.height * 0.3).isActive = true
@@ -133,7 +146,7 @@ extension LoginVC {
     }
     
     private func setupAuthButton() {
-        view.addSubview(authenticateButton)
+        
         authenticateButton.topAnchor.constraint(equalTo: facebookButton.bottomAnchor, constant: 24).isActive = true
         authenticateButton.widthAnchor.constraint(equalTo: logoImageView.widthAnchor).isActive = true
         authenticateButton.heightAnchor.constraint(equalTo: fullNameTextField.heightAnchor).isActive = true
@@ -144,8 +157,6 @@ extension LoginVC {
         credentialStackView.addArrangedSubview(emailTextField)
         credentialStackView.addArrangedSubview(passwordTextField)
         
-        view.addSubview(credentialStackView)
-        credentialStackView.translatesAutoresizingMaskIntoConstraints = false
         credentialStackView.topAnchor.constraint(equalTo: fullNameTextField.bottomAnchor, constant: 8).isActive = true
         credentialStackView.widthAnchor.constraint(equalTo: logoImageView.widthAnchor).isActive = true
         credentialStackView.heightAnchor.constraint(equalTo: logoImageView.heightAnchor).isActive = true
@@ -157,16 +168,13 @@ extension LoginVC {
     }
     
     private func setupSocialButtons() {
-        let stackView = UIStackView(arrangedSubviews: [facebookButton, googleButton])
-        stackView.distribution = .fillEqually
-        stackView.axis = .horizontal
-        stackView.spacing = 16
         
-        view.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.topAnchor.constraint(equalTo: orLabel.bottomAnchor, constant: 8).isActive = true
-        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        stackView.layoutIfNeeded()
+        socialStackView.addArrangedSubview(facebookButton)
+        socialStackView.addArrangedSubview(googleButton)
+
+        socialStackView.topAnchor.constraint(equalTo: orLabel.bottomAnchor, constant: 8).isActive = true
+        socialStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        socialStackView.layoutIfNeeded()
         
         facebookButton.heightAnchor.constraint(equalToConstant: passwordTextField.frame.height).isActive = true
         facebookButton.widthAnchor.constraint(equalToConstant: passwordTextField.frame.height).isActive = true
@@ -253,10 +261,7 @@ extension LoginVC {
         toggleModeButton.layoutIfNeeded()
         
     }
-    
-    
 }
-
 
 // MARK: Mode Logic
 extension LoginVC {

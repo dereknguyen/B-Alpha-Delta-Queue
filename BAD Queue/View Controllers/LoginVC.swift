@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Firebase
+import FacebookCore
+import FacebookLogin
 
 class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
     
@@ -117,6 +120,16 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
         stackView.spacing = 8
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    var socialStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.distribution = .fillEqually
+        stackView.axis = .horizontal
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -126,6 +139,7 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
         button.showsTouchWhenHighlighted = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0.0
+        button.addTarget(self, action: #selector(authenticateGoogle), for: .touchUpInside)
         return button
     }()
     
@@ -135,6 +149,7 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
         button.showsTouchWhenHighlighted = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0.0
+        button.addTarget(self, action: #selector(authenticateFacebook), for: .touchUpInside)
         return button
     }()
     
@@ -146,6 +161,7 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.alpha = 0.0
+        button.addTarget(self, action: #selector(authenticateEmail), for: .touchUpInside)
         return button
     }()
     
@@ -287,7 +303,155 @@ class LoginVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
         setupUI()
     }
     
-    
 }
+
+extension LoginVC {
+    
+    @objc fileprivate func authenticateEmail() {
+        authenticateButton.backgroundColor = #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 0.8)
+        authenticateButton.isEnabled = false
+        
+        if isSignIn {
+            signInEmail()
+        }
+        else {
+            signUpEmail()
+        }
+    }
+    
+    fileprivate func signInEmail() {
+        guard let email = emailTextField.text else { /* TODO: DETECT EMPTY */ return }
+        guard let password = passwordTextField.text else { /* TODO: DETECT EMPTY */ return }
+        
+        Auth.auth().signIn(withEmail: email, password: password) {
+            [weak self] (user, error) in
+            
+            guard let this = self else { return }
+            
+            if let err = error {
+                
+                // TODO: PARSE ERROR
+                print("Login Error: \n", err)
+                this.authenticateButton.backgroundColor = this.color
+                this.authenticateButton.isEnabled = true
+            }
+            else {
+                // TODO: PROCEED AFTER LOG IN SUCCESSFULLY
+                print("Login Success!")
+                this.authenticateButton.backgroundColor = this.color
+                this.authenticateButton.isEnabled = true
+                
+                // TODO: REMOVE
+                do {
+                    try Auth.auth().signOut()
+                    print("Signed out!")
+                } catch {
+                    print("Log Out error")
+                }
+            }
+        }
+    }
+    
+    fileprivate func signUpEmail() {
+        
+        guard let fullName = fullNameTextField.text else { /* TODO: DETECT EMPTY */ return }
+        guard let email = emailTextField.text else { /* TODO: DETECT EMPTY */ return }
+        guard let password = passwordTextField.text else { /* TODO: DETECT EMPTY */ return }
+        
+        Auth.auth().createUser(withEmail: email, password: password) {
+            [weak self] (user, error) in
+            
+            guard let this = self else { return }
+            
+            if let err = error {
+                
+                // TODO: PARSE ERROR
+                print("Create Account Error: \n", err)
+                this.authenticateButton.backgroundColor = this.color
+                this.authenticateButton.isEnabled = true
+            }
+            else {
+                // TODO: PROCEED AFTER CREATE SUCCESSFULLY
+                print("Create User Success!")
+                this.authenticateButton.backgroundColor = this.color
+                this.authenticateButton.isEnabled = true
+                
+                // TODO: REMOVE
+                do {
+                    try Auth.auth().signOut()
+                    print("Signed out!")
+                } catch {
+                    print("Log Out error")
+                }
+            }
+            
+        }
+        
+    }
+}
+
+extension LoginVC {
+    @objc fileprivate func authenticateGoogle() {
+        
+    }
+    
+    @objc fileprivate func authenticateFacebook() {
+        if isSignIn {
+            let manager = LoginManager(loginBehavior: .native, defaultAudience: .onlyMe)
+            
+            manager.logIn(readPermissions: [.publicProfile, .email], viewController: self) {
+                [weak self] (loginResult) in
+                
+                guard let this = self else { return }
+                
+                switch loginResult {
+                case .success(grantedPermissions: _, declinedPermissions: _, token: _):
+                    // TODO: FILL IN PARAMETERS FOR SUCCESS FB LOGIN
+                    this.firebaseLogin()
+                case .cancelled:
+                    // TODO: HANDLE USER CANCEL FB LOGIN ATTEMPT
+                    print("User cancel FB Login attempt.")
+                case .failed(let error):
+                    print("FB Login Error: \n", error)
+                }
+            }
+        }
+    }
+    
+    fileprivate func firebaseLogin() {
+        guard let authToken = AccessToken.current?.authenticationToken else { return }
+        let authCredential = FacebookAuthProvider.credential(withAccessToken: authToken)
+        
+        Auth.auth().signIn(with: authCredential) {
+            (user, error) in
+            if let err = error {
+                print("Facebook -> Firebase Login Error: ", err)
+            }
+            else {
+                print("Facebook -> Firebase Login Success")
+            }
+        }
+    }
+    
+    fileprivate func showUserInfos() {
+        
+//        FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email"]).start {
+//            (connection, result, error) in
+//            if let err = error {
+//                print("Failed:", err)
+//                return
+//            }
+//            else {
+//                print(result ?? "")
+//            }
+//        }
+    }
+}
+
+
+
+
+
+
 
 
